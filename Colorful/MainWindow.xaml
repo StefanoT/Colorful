@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+        md:DialogServiceViews.IsRegistered="True"
         mc:Ignorable="d ignore"
         Height="500"
         Width="500"
@@ -33,6 +35,5 @@
         <Image x:Name="image" Source="{Binding ImageFileName}" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" MinHeight="100" Grid.Row="3" Grid.Column="0"/>
         <TextBlock x:Name="textBlock" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ColorIndex, TargetNullValue=''}" FontWeight="Bold" FontSize="36" TextAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
         <ProgressBar Value="{Binding ColorIndex}" Height="15" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-
     </Grid>
 </Window>
