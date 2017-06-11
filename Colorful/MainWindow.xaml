@@ -13,12 +13,13 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <ResourceDictionary Source="Themes/MetroDark/MetroDark.MSControls.Core.Implicit.xaml" />
+                <ResourceDictionary Source="Themes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{DynamicResource ExpanderBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -29,6 +30,6 @@
             <TextBox x:Name="fileNameTextBox" Text="{Binding ImageFileName}" Height="23" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
         </StackPanel>
         <Image x:Name="image" Source="{Binding ImageFileName}" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" MinHeight="100" Grid.Row="2" Grid.Column="0"/>
-        <TextBlock x:Name="textBlock" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ColorIndex, TargetNullValue=''}" FontWeight="Bold" FontSize="36" TextAlignment="Center"/>
+        <TextBlock x:Name="textBlock" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ColorIndex, TargetNullValue=''}" FontWeight="Bold" FontSize="36" TextAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
     </Grid>
 </Window>
