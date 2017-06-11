@@ -31,10 +31,11 @@ namespace Colorful.Model
         /// implements image colorfulness measure with the Hasler and Süsstrunk algorithm
         /// </summary>
         /// <param name="imageFileName">input image file to process</param>
-        /// <returns>colorfulness measure</returns>
+        /// <returns>colorfulness measure if processing was successful, less than zero if error</returns>
         /// <remarks>http://www.pyimagesearch.com/2017/06/05/computing-image-colorfulness-with-opencv-and-python/</remarks>
         public double ComputeColorIndex(string imageFileName)
         {
+            const double ERROR_CODE = -1.0;
             Bitmap sourceImage;
             try
             {
@@ -44,11 +45,27 @@ namespace Colorful.Model
                 sourceImage = null;
             }
             if (sourceImage == null)
-                return 0;
+                return ERROR_CODE;
 
             int totalPixels = sourceImage.Width * sourceImage.Height;
             if (totalPixels <= 0)
-                return 0;
+                return ERROR_CODE;
+
+            // allocate temp buffers to hold intermediate results
+            double[,] rg_image = null;
+            double[,] yb_image = null;
+            try
+            {
+                rg_image = new double[sourceImage.Height, sourceImage.Width];
+                yb_image = new double[sourceImage.Height, sourceImage.Width];
+            } catch (Exception e)
+            {
+                rg_image = null;
+                yb_image = null;
+            }
+            if ((rg_image == null) || (yb_image == null))
+                return ERROR_CODE;
+
             // compute mean
             double rg_mean = 0;
             double yb_mean = 0;
@@ -56,8 +73,13 @@ namespace Colorful.Model
                 for (int x = 0; x < sourceImage.Width; x++)
                 {
                     Color currentPixel = sourceImage.GetPixel(x, y);
-                    rg_mean += Math.Abs((int)currentPixel.R - (int)currentPixel.G);
-                    yb_mean += Math.Abs(0.5 * ((int)currentPixel.R + (int)currentPixel.G) - currentPixel.B);
+                    double rg = Math.Abs((int)currentPixel.R - (int)currentPixel.G);
+                    double yb = Math.Abs(0.5 * ((int)currentPixel.R + (int)currentPixel.G) - currentPixel.B);
+                    rg_mean += rg;
+                    yb_mean += yb;
+                    // GetPixel is quite slow, so intermediate results are stored here to be used in the next loop
+                    rg_image[y, x] = rg;
+                    yb_image[y, x] = yb;
                 }
             rg_mean /= totalPixels;
             yb_mean /= totalPixels;
@@ -67,10 +89,9 @@ namespace Colorful.Model
             double yb_stddev = 0;
             for (int y = 0; y < sourceImage.Height; y++)
                 for (int x = 0; x < sourceImage.Width; x++)
-                {
-                    Color currentPixel = sourceImage.GetPixel(x, y);
-                    double rg = Math.Abs((int)currentPixel.R - (int)currentPixel.G);
-                    double yb = Math.Abs(0.5 * ((int)currentPixel.R + (int)currentPixel.G) - currentPixel.B);
+                {                  
+                    double rg = rg_image[y, x];
+                    double yb = yb_image[y, x];
                     rg_stddev += Math.Pow(rg - rg_mean, 2);
                     yb_stddev += Math.Pow(yb - yb_mean, 2);
                 }

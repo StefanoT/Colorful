@@ -102,7 +102,8 @@ namespace Colorful.ViewModel
         {            
             Task computeTask = Task.Factory.StartNew(() => _colorService.ComputeColorIndex(ImageFileName)).ContinueWith((t) =>
             {
-                ColorIndex = t.Result;
+                if (t.Result >= 0)
+                    ColorIndex = t.Result;
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
