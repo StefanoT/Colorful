@@ -1,0 +1,34 @@
+﻿<Window x:Class="Colorful.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        mc:Ignorable="d ignore"
+        Height="500"
+        Width="500"
+        Title="Colorfulness"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <Button x:Name="openFileButton" Command="{Binding PickImageCommand}"  Height="23" Content="Pick image..." HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="fileNameTextBox" Text="{Binding ImageFileName}" Height="23" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+        </StackPanel>
+        <Image x:Name="image" Source="{Binding ImageFileName}" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" MinHeight="100" Grid.Row="2" Grid.Column="0"/>
+        <TextBlock x:Name="textBlock" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ColorIndex, TargetNullValue=''}" FontWeight="Bold" FontSize="36" TextAlignment="Center"/>
+    </Grid>
+</Window>
